@@ -3,13 +3,13 @@ use std::str::Lines;
 
 fn main() {
     println!("########## # ############################ ##### ####################### #");
-    println!("##### Advent of code 2022 - Day one - First puzzle #####");
+    println!("##### Advent of code 2022 - Day one - Puzzle #####");
     println!("########## # ############################ ##### ####################### #");
 
     let mut most_hungry_elf : i32 = 0;
     let mut current_elf_food_needs : i32 = 0;
 
-    let file_path = "inputs/one";
+    let file_path = "puzzle-inputs/one";
 
     let contents = fs::read_to_string(file_path)
         .expect("Should have been able to read the input file");
