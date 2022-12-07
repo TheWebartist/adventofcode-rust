@@ -34,6 +34,9 @@ fn main() {
 
     println!("Total score according to strategy guide (first part) : {total_score_first_part}");
     println!("Total score according to strategy guide (second part) : {total_score_second_part}");
+    
+    // Empty line for space between all days answers
+    println!("");
 }
 
 fn get_score_from_shapes (entry_shape : &str, response_shape : &str) -> u32 {
