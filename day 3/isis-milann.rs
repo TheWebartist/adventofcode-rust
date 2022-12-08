@@ -8,6 +8,7 @@ fn main() {
     println!("########## # ############################ ##### ####################### #");
 
     let mut sum_of_priorities : u32 = 0;
+    let mut sum_of_priorities_by_group : u32 = 0;
 
     let file_path = "puzzle-inputs/one";
 
@@ -18,6 +19,8 @@ fn main() {
 
     let lines = contents.lines();
 
+    let mut elfs_group : Vec<String> = Vec::new();
+
     for rucksack in lines {
         if !rucksack.is_empty() {
             let mut rss = String::from(rucksack);
@@ -26,13 +29,36 @@ fn main() {
             let first_compartment : String = rss.drain(..separator_offset).collect();
             let second_compartment = rss;
             sum_of_priorities += get_duplicated_items_priorities_in_rucksack_compartments(first_compartment, second_compartment, &priorities_ids_values_pair);
+            elfs_group.push(String::from(rucksack));
+            if elfs_group.len() == 3 {
+                sum_of_priorities_by_group += get_duplicated_items_priorities_in_group_rucksacks(&elfs_group, &priorities_ids_values_pair);
+                elfs_group.clear();
+            }
         }
     } 
 
-    println!("The sum of the priorities of duplicated items in backsack's compartments : {sum_of_priorities}");
+    println!("The sum of the priorities of duplicated items in backsack's compartments : {sum_of_priorities} [first part answer]");
+    println!("The sum of the priorities of duplicated items for elfs groups : {sum_of_priorities_by_group} [second part answer]");
     
     // Empty line for space between all days answers
     println!("");
+}
+
+fn get_duplicated_items_priorities_in_group_rucksacks (elfs_group : &Vec<String>, priorities_map : &HashMap<char, u8>) -> u32 {
+    let first_rucksack = elfs_group.get(0);
+    match first_rucksack {
+        Some(ri) => {
+            let rucksack_items = ri.chars();
+            for item in rucksack_items {
+                let is_common_item = elfs_group.iter().all(|i|i.contains(item));
+                if is_common_item {
+                    return get_priority_from_item_id(item, priorities_map).into();
+                }
+            }
+            return 0;
+        }, 
+        None => return 0
+    }
 }
 
 fn get_duplicated_items_priorities_in_rucksack_compartments (first_compartment : String, second_compartment : String, priorities_map : &HashMap<char, u8>) -> u32 {
